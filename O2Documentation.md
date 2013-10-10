@@ -6,28 +6,37 @@
 
 Simply put O2 scripting using Wathin which is an scripting library in C#. This means that if you know C# you'll have no problems getting to grips with the language. I didn't know C#, I knew Java, but its so incredibly straight forward it really shouldn't be a problem for anyone who has some coding knowledge.
 
+The appendix is slowly filling, archiving some of the links to the examples written by Dinis.
 
+<a name="contents"></a>
 #Contents#
 
 - [Starting a New Script](#newScript) 
-- [HTML Links](#links)
+- [Links & Urls](#links)
 - [HTML Forms](#htmlForms)
 	- [HTML Buttons](#htmlButtons)
 	- [HTML Fields](#htmlFields)
 - [Grabbing Text/HTML](#grabbingText)
 - [Injecting into the page](#injecting)
+- [Posting Data](#posting)
+- [Scrolling](#scrolling)
 - [Interface and interaction with a user](#interacting)
-	- [Buttons](#csButtons)
-	- [Fields](#csFields)
-	- [Datagrids](#datagrid)
+	- [Action Panels](#csActionPanels)
+	- [Labels](#csLabels)
+	- [TextBoxes and Buttons](#csTextBoxesButtons)
+	- [Datagrids](#csDatagrid)
 	- [Delays](#delays)
 - [Saving out data](#saving)
 - [Reading from Files](#reading)
 - [Actions and Functions](#actionsFunctions)
-- [Exporting to a standalone product](#exportingSA)
+- [Messages](#messages)
+- [Exporting to a standalone product](#standalone)
+- [Examples](#examples)
+- [Appendix](#appendix)
 
 <a name="newScript"></a>
 ##Starting a New Script
+[Go to Contents](#contents)
 
 When beginning a new script the first thing you need to do is bring inject an instance of a web browser into O2. 
 To do this we create a panel within O2, then insert an instance of Internet Explorer into that:
@@ -60,8 +69,9 @@ So a very first script could look like:
 	//O2Ref:FluentSharp.Watin.dll
 	//O2Ref:WatiN.Core.dll
 
-
+<a name="links"></a>
 ### Links & URLs###
+[Go to Contents](#contents)
 
 Links can be clicked to go to different areas of the site. First we need to detect them on the page. This is a little bit of an art as you will need to be able to look at the source code for the site. I tend to do this from another browser as generally the source code viewer is better than the IE one.
 The other way is to get O2 to pass back all the links on the page.
@@ -116,7 +126,9 @@ or
 var webaddress = ie.url();
 return webaddress.str();
 
+<a name="htmlForms"></a>
 ## Forms ##
+[Go to Contents](#contents)
 
 Forms are everywhere. To really script a page, it is necessary to be able to fill them out. The first thing to deal with are input fields such as google's search field. You can fill out a field based on knowing its name. To find out what fields are on the page:
 
@@ -135,6 +147,10 @@ Don't forget that hidden fields are still fields, and if you need to set the val
 
 Next we need to be able to perform the search. To do this we click on the Google Search button.
 
+<a name="htmlButtons"></a>
+## Buttons ##
+[Go to Contents](#contents)
+
 To see what buttons there are:
 
 	return ie.buttons();
@@ -152,6 +168,10 @@ So if the above doesn't work, don't fret. We just need to bring some jquery cont
 
 The first line injects jQuery into the webbrowser, the second line uses jQuery to submit the form.
 This is definitely not a bad way of doing it at all, and probably when automating something like Google, quite a good way of doing it. However from a viewer's perspective, you don't really get to see what's going on - sometimes thats a problem. My personal favourite then, is to inject a button into the page that will submit the form. Our own personal button.
+
+<a name="htmlFields"></a>
+##Fields##
+[Go to Contents](#contents)
 
 Find where you want to inject it - we know that, we want to inject it near the search box, which we also know is called "q". Then:
 
@@ -188,7 +208,9 @@ At this point its probably a good idea to say there is autocomplete. If you star
 
 and wait. A drop down will appear, as you start typing it will refine the options, This is a good way of finding out what's available to you.
 
+<a name="grabbingText"></a>
 ### Grabbing text from the page for analysis or...whatever.
+[Go to Contents](#contents)
 
 Sometimes a decision needs to be made based on whether something has appeared on the page. I wrote a script that Google picked up as a potential bot therefore redirected it to a Captcha.
 When my script loaded the page it checked to see whether:
@@ -213,7 +235,9 @@ Its **C#** remember so for the name, I could use the page's url and split it out
 	
 	return name[0] + " " + name[1];
 
+<a name="injecting"></a>
 ###Injecting into the page
+[Go to Contents](#contents)
 
 Often its nice to be able to change a value on the page, or add a text field or whatever. I went over some of this earlier with submitting forms - I injected a button into the page to submit the form. 
 One example of this is Dinis' JPetStore hack. He hacks the page so that the attacker can input how much he'd like to pay for his fish into a nice text field. This is a little forced as an attacker probably wouldn't go to such lengths, but from the point of view of a demonstration this is great as it shows a project manager a very straight forward and easy to do, hack.
@@ -224,11 +248,41 @@ Remember to include the library
 
 	//O2Ref:Microsoft.mshtml.dll
 
+<a name="posting"></a>
+###Posting Data
+[Go to Contents](#contents)
+
+If you want to bypass controlling the site completely, and just posting data using the POST method you can do
+
+	var url = "http://theurl.com";
+	var postData = "{PUT POST DATA HERE}":
+	url.POST(postData);
+
+The GET method is straight forward as you can just ie.open(""); the link and place variables into the correct part of the URL
+
+	variable="Dinis+Cruz" //my google search
+	page2=10;//google displays 10 links a page
+	ie.open("https://www.google.co.uk/?gws_rd=cr&ei=OXVJUvH2A6Ku7AboqYH4BQ#q="+variable+"&safe=off&start="+page2);
+
+<a name="scrolling"></a>
+###Scrolling
+[Go to Contents](#contents)
+
+If you are using the flashing technique to show a user where the script is acting, then you will want to be able to scroll that part of the page into view
+
+	ie.link("hello").scrollIntoView().flash().click();
+
+Remember you can scroll any element into view. 
+
+<a name="interacting"></a>
 ###Interface and interaction with a user
+[Go to Contents](#contents)
 
 When making an application that you might use more than once, its a pain to have to edit the code each time you want to make a change. Another example was I was working on a project and wanted to send the demonstration of the hack to the customer. I wanted a "commentary" as the hack took place. A nice way of doing this was having text across the top explaining what was currently happening.
 
-####ActionPanels
+<a name="csActionPanels"></a>
+###Action Panels####
+[Go to Contents](#contents)
 
 To create an "area" at the top of the panel to display text/buttons/textboxes, add an actionPanel:
 
@@ -236,7 +290,10 @@ To create an "area" at the top of the panel to display text/buttons/textboxes, a
 
 That adds an actionPanel 40 pixels high.
 
-####Labels
+<a name="csLabels"></a>
+###Labels
+[Go to Contents](#contents)
+
 Then to add a label to display text:
 
 	actionPanel.add_Label("Displaying some text").size(20);
@@ -245,7 +302,10 @@ You can clear the actionPanel with:
 
 	actionPanel.clear();
 
-####Text Boxes and Buttons
+<a name="csTextBoxesButtons"></a>
+###Text Boxes and Buttons
+[Go to Contents](#contents)
+
 A more advanced actionPanel may contain a textbox and a button. One option here is the:
 
 	    actionPanel.add_LabelAndTextAndButton("Type Here:",
@@ -255,7 +315,9 @@ A more advanced actionPanel may contain a textbox and a button. One option here 
 
 See Functions and Actions to understand how to get the clicking of the button to call an action and perform a task.
 
-####Datagrids
+<a name="csDatagrids"></a>
+###Datagrids
+[Go to Contents](#contents)
 
 To display data back to a user a datagrid is often a good bet. Infact I dont think I've written a script where I didnt use one.
 Add it after adding the ie window to the panel
@@ -274,8 +336,10 @@ You can clear the datagrid with
 
 	dataGridView.remove_Rows();
 
-####Delays
-	
+<a name="csDelays"></a>
+###Delays
+[Go to Contents](#contents)
+
 If you want to slow a demonstration down, then there are two useful things to know. The first is just a straightforward delay
 
 	1000.wait();
@@ -292,15 +356,9 @@ That will find the link called hello, flash it yellow a couple of times and then
 
 Just another example....
 
-####Scrolling
-	
-If you are using the flashing technique to show a user where the script is acting, then you will want to be able to scroll that part of the page into view
-
-	ie.link("hello").scrollIntoView().flash().click();
-
-Remember you can scroll any element into view. 
-
+<a name="saving"></a>
 ###Saving Out data
+[Go to Contents](#contents)
 
 If you want to keep the results then you can store them to a list and save the list of data to a temporary text file that you can post process.
 
@@ -317,7 +375,16 @@ Then save it out, and if you wish, display it
 	        var savedData = allData.sort().save();
             savedData.showInCodeViewer();
 
+<a name="reading"></a>
+###Reading From Files
+[Go to Contents](#contents)
+
+TBC...
+It is possible to read from CSV etc. I need to write this up
+			
+<a name="actionsFunctions"></a>
 ###Actions and Functions
+[Go to Contents](#contents)
 
 Actions and functions differ in the fact that an action doesn't return any data. To create an action:
 
@@ -353,26 +420,24 @@ This function takes two strings and returns a boolean. In this case it checks wh
 
 now the variable names will equal the result of calling that function
 
-###Posting Data
-If you want to bypass controlling the site completely, and just posting data using the POST method you can do
-
-	var url = "http://theurl.com";
-	var postData = "{PUT POST DATA HERE}":
-	url.POST(postData);
-
-The GET method is straight forward as you can just ie.open(""); the link and place variables into the correct part of the URL
-
-	variable="Dinis+Cruz" //my google search
-	page2=10;//google displays 10 links a page
-	ie.open("https://www.google.co.uk/?gws_rd=cr&ei=OXVJUvH2A6Ku7AboqYH4BQ#q="+variable+"&safe=off&start="+page2);
-
+<a name="messages"></a>
 ###Display a message across the IE window
+[Go to Contents](#contents)
 
 Just try it - easiest way to understand what it does
 
 	ie.showMessage("This is a message!");
 
-##example code sinppets
+<a name="standalone"></a>
+###Exporting to a standalone product
+[Go to Contents](#contents)
+
+TBC...
+For demos and applications they can be exported to .exe files. I need to write this stuff
+
+<a name="examples"></a>
+##Example code snippets
+[Go to Contents](#contents)
 
 These are examples, but also useful to remember how to do things
 
@@ -418,3 +483,23 @@ Scrolling through a list
           {
 			ie.open(data); //assuming this list stores urls
 		}
+<a name="appendix"></a>
+##Appendix
+[Go to Contents](#contents)
+
+Links to some of Dinis' tutorials for using O2.
+
+- <a href="http://blog.diniscruz.com/2013/08/using-captured-account-details-on-login.html">
+	Demonstrates automating a website for login</a>
+- <a href="http://blog.diniscruz.com/2010/06/o2-platform-support-for-webgoat.html">
+	Automating WebGoat</a>
+	- Demonstrates Selecting from Dropdowns
+	- Filling in forms
+	- Clicking buttons
+	- Flashing fields for demonstrations
+- <a href="http://blog.diniscruz.com/2013/03/packaging-o2-platform-script-as-stand.html">
+	More explanation into packaging an O2 Script into an executable</a>
+- JPetStore
+	- JPetStore is an example of a Spring web application. Spring has an inherent vulnerability.
+	- You can download the example web app and everything you need <a hred="http://support.neotys.com/misc/jpetstore-test.zip">here</a>
+	- <a href="https://github.com/o2platform/O2.Platform.Scripts/blob/master/_Sample_Vulns/jPetStore/JpetStore%20-%20BlackBox%20Exploits.h2#L67">This is an example of exploiting the vulnerability in the Spring Framework using O2</a>
