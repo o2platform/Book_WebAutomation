@@ -6,6 +6,8 @@
 
 Simply put O2 scripting using Wathin which is an scripting library in C#. This means that if you know C# you'll have no problems getting to grips with the language. I didn't know C#, I knew Java, but its so incredibly straight forward it really shouldn't be a problem for anyone who has some coding knowledge.
 
+The appendix is slowly filling, archiving some of the links to the examples written by Dinis.
+
 <a name="contents"></a>
 #Contents#
 
@@ -30,6 +32,7 @@ Simply put O2 scripting using Wathin which is an scripting library in C#. This m
 - [Messages](#messages)
 - [Exporting to a standalone product](#standalone)
 - [Examples](#examples)
+- [Appendix](#appendix)
 
 <a name="newScript"></a>
 ##Starting a New Script
@@ -433,7 +436,7 @@ TBC...
 For demos and applications they can be exported to .exe files. I need to write this stuff
 
 <a name="examples"></a>
-##example code snippets
+##Example code snippets
 [Go to Contents](#contents)
 
 These are examples, but also useful to remember how to do things
@@ -480,3 +483,23 @@ Scrolling through a list
           {
 			ie.open(data); //assuming this list stores urls
 		}
+<a name="appendix"></a>
+##Appendix
+[Go to Contents](#contents)
+
+Links to some of Dinis' tutorials for using O2.
+
+- <a href="http://blog.diniscruz.com/2013/08/using-captured-account-details-on-login.html">
+	Demonstrates automating a website for login</a>
+- <a href="http://blog.diniscruz.com/2010/06/o2-platform-support-for-webgoat.html">
+	Automating WebGoat</a>
+	- Demonstrates Selecting from Dropdowns
+	- Filling in forms
+	- Clicking buttons
+	- Flashing fields for demonstrations
+- <a href="http://blog.diniscruz.com/2013/03/packaging-o2-platform-script-as-stand.html">
+	More explanation into packaging an O2 Script into an executable</a>
+- JPetStore
+	- JPetStore is an example of a Spring web application. Spring has an inherent vulnerability.
+	- You can download the example web app and everything you need <a hred="http://support.neotys.com/misc/jpetstore-test.zip">here</a>
+	- <a href="https://github.com/o2platform/O2.Platform.Scripts/blob/master/_Sample_Vulns/jPetStore/JpetStore%20-%20BlackBox%20Exploits.h2#L67">This is an example of exploiting the vulnerability in the Spring Framework using O2</a>
